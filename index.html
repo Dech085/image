@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <form id="leaveForm">
+      <label>กลุ่มงาน:<br>
+        <input type="text" name="group" required>
+      </label><br>
+      <label>หน่วยงานย่อย:<br>
+        <input type="text" name="unit" required>
+      </label><br>
+      <label>วันที่ลา:<br>
+        <input type="date" name="dateLeave" required>
+      </label><br>
+      <label>ประเภทการลา:<br>
+        <input type="text" name="leaveType" required>
+      </label><br>
+      <label>จำนวนวันที่ลา:<br>
+        <input type="number" name="days" required>
+      </label><br>
+      <label>รหัสที่กรอกข้อมูล:<br>
+        <input type="text" name="empId" required>
+      </label><br>
+      <input type="submit" value="ส่งข้อมูล">
+    </form>
+    <div id="output"></div>
+    <script>
+      document.getElementById('leaveForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(e.target).entries());
+        google.script.run.withSuccessHandler(function() {
+          document.getElementById('output').innerText = 'บันทึกข้อมูลแล้ว';
+          e.target.reset();
+        }).withFailureHandler(function(err) {
+          document.getElementById('output').innerText = 'เกิดข้อผิดพลาด: ' + err.message;
+        }).submitForm(data);
+      });
+    </script>
+  </body>
+</html>
